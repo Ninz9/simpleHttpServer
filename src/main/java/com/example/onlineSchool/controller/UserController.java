@@ -36,15 +36,23 @@ public class UserController {
 
 
     @GetMapping
-public ResponseEntity getOneUser(@RequestParam Long id){
-    try{
-        return  ResponseEntity.ok(userService.getOne(id));
-    } catch (UserNotFoundExeption e){
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-    catch (Exception e){
-        return ResponseEntity.badRequest().body("Error");
-    }
+public ResponseEntity getOneUser(@RequestParam Long id , Long flag){
+        if (flag == 1) {
+            try {
+                return ResponseEntity.ok(userService.getOne(id));
+            } catch (UserNotFoundExeption e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Error");
+            }
+        } else {
+            try {
+                return ResponseEntity.ok(userService.getGroups(id));
+            }
+            catch (UserNotFoundExeption userNotFoundExeption){
+                return ResponseEntity.badRequest().body(userNotFoundExeption);
+            }
+        }
 }
 
 

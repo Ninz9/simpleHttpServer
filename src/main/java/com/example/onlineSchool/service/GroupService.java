@@ -42,7 +42,7 @@ public class GroupService {
             throw new GroupNotFoundExeption("Group not founded");
         }
         group.addStudent(student);
-
+        student.addGroup(group);
         return groupRepo.save(group);
     }
 
@@ -62,9 +62,13 @@ public class GroupService {
         }
         return group;
     }
-    public List<UserEntity> getStudentsWhoStudyInGroup(Long id) throws  GroupNotFoundExeption{
+    public List<User> getStudentsWhoStudyInGroup(Long id) throws  GroupNotFoundExeption{
         GroupEntity group = groupRepo.findById(id).orElseThrow(() -> new GroupNotFoundExeption("Group Not Found"));
-       return group.getStudents();
+        List<User> tmp = null;
+        for (int i = 0; i< group.getStudents().size();i++){
+            tmp.add(User.toModel(group.getStudents().get(i)));
+        }
+        return tmp;
     }
 
 

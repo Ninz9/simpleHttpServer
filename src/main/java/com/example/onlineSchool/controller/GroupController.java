@@ -3,6 +3,7 @@ package com.example.onlineSchool.controller;
 import com.example.onlineSchool.entity.GroupEntity;
 import com.example.onlineSchool.exception.GroupNotFoundExeption;
 import com.example.onlineSchool.exception.UserNotFoundExeption;
+import com.example.onlineSchool.model.Group;
 import com.example.onlineSchool.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class GroupController {
     public ResponseEntity getGroup(@RequestParam Long id, @RequestParam Long flag) {
         if (flag == 1) {
             try {
-                return ResponseEntity.ok(groupService.getOne(id));
+                return ResponseEntity.ok(new Group().toModel(groupService.getOne(id)));
             } catch (GroupNotFoundExeption groupNotFoundedExeption) {
                 return ResponseEntity.badRequest().body(groupNotFoundedExeption);
             } catch (Exception e) {

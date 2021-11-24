@@ -13,7 +13,6 @@ public class User {
         user.setUsername(entity.getUsername());
         user.setId(entity.getId());
         return user;
-
     }
     public Long getId() {
         return id;

@@ -49,4 +49,8 @@ public class UserEntity{
     public void addGroup(GroupEntity group){
         studyInClasses.add(group);
     }
+
+    public List<GroupEntity> getStudyInClasses() {
+        return studyInClasses;
+    }
 }

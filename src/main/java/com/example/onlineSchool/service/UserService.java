@@ -1,8 +1,10 @@
 package com.example.onlineSchool.service;
 
+import com.example.onlineSchool.entity.GroupEntity;
 import com.example.onlineSchool.entity.UserEntity;
 import com.example.onlineSchool.exception.UserAlreadyExistException;
 import com.example.onlineSchool.exception.UserNotFoundExeption;
+import com.example.onlineSchool.model.Group;
 import com.example.onlineSchool.model.User;
 import com.example.onlineSchool.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +48,12 @@ public class UserService {
         userRepo.save(user);
         return id;
     }
-
+    public List<Group> getGroups(Long id) throws UserNotFoundExeption{
+        UserEntity user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundExeption("User not found"));
+        List<Group> tmp = null;
+        for (GroupEntity i: user.getStudyInClasses()){
+            tmp.add(Group.toModel(i));
+        }
+            return tmp;
+    }
 }
