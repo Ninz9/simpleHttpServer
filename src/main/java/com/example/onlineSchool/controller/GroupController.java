@@ -1,10 +1,9 @@
 package com.example.onlineSchool.controller;
 
 import com.example.onlineSchool.entity.GroupEntity;
-import com.example.onlineSchool.exception.GroupNotFoundedExeption;
+import com.example.onlineSchool.exception.GroupNotFoundExeption;
 import com.example.onlineSchool.exception.UserNotFoundExeption;
 import com.example.onlineSchool.service.GroupService;
-import com.example.onlineSchool.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +15,24 @@ public class GroupController {
     GroupService groupService;
 
     @GetMapping
-    public ResponseEntity getOneGroup(@RequestParam Long id){
-        try{
-            return ResponseEntity.ok(groupService.getOne(id));
-        } catch (GroupNotFoundedExeption groupNotFoundedExeption) {
-            return ResponseEntity.badRequest().body(groupNotFoundedExeption);
-        } catch (Exception e){
-            return ResponseEntity.badRequest().body("ERROR");
+    public ResponseEntity getGroup(@RequestParam Long id, @RequestParam Long flag) {
+        if (flag == 1) {
+            try {
+                return ResponseEntity.ok(groupService.getOne(id));
+            } catch (GroupNotFoundExeption groupNotFoundedExeption) {
+                return ResponseEntity.badRequest().body(groupNotFoundedExeption);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("ERROR");
+            }
+        } else {
+            try {
+                return ResponseEntity.ok(groupService.getStudentsWhoStudyInGroup(id));
+            } catch (GroupNotFoundExeption groupNotFoundExeption) {
+                return ResponseEntity.badRequest().body(groupNotFoundExeption);
+            }
         }
     }
+
 
 
 
@@ -44,7 +52,7 @@ public class GroupController {
                groupService.addNewStudent(groupId,studentId);
                return ResponseEntity.ok("Student has been added");
 
-           } catch (UserNotFoundExeption | GroupNotFoundedExeption userNotFoundExeption) {
+           } catch (UserNotFoundExeption | GroupNotFoundExeption userNotFoundExeption) {
                return ResponseEntity.badRequest().body(userNotFoundExeption);
            } catch (Exception e) {
                 return ResponseEntity.badRequest().body("ERROR");
@@ -55,8 +63,10 @@ public class GroupController {
         try {
             groupService.changeTeacher(groupId,teacherId);
             return ResponseEntity.ok("Teacher was changed");
-        } catch (UserNotFoundExeption | GroupNotFoundedExeption userNotFoundExeption) {
+        } catch (UserNotFoundExeption | GroupNotFoundExeption userNotFoundExeption) {
             return ResponseEntity.badRequest().body(userNotFoundExeption);
         }
     }
+
+
 }

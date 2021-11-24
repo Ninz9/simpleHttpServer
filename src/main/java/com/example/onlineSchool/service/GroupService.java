@@ -3,7 +3,7 @@ package com.example.onlineSchool.service;
 import com.example.onlineSchool.entity.GroupEntity;
 import com.example.onlineSchool.entity.SubjectEntity;
 import com.example.onlineSchool.entity.UserEntity;
-import com.example.onlineSchool.exception.GroupNotFoundedExeption;
+import com.example.onlineSchool.exception.GroupNotFoundExeption;
 import com.example.onlineSchool.exception.UserNotFoundExeption;
 import com.example.onlineSchool.model.User;
 import com.example.onlineSchool.repository.GroupRepo;
@@ -11,6 +11,8 @@ import com.example.onlineSchool.repository.SubjectRepo;
 import com.example.onlineSchool.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class GroupService {
@@ -30,39 +32,40 @@ public class GroupService {
     }
 
 
-    public GroupEntity addNewStudent(Long groupId, Long studentId) throws UserNotFoundExeption, GroupNotFoundedExeption {
+    public GroupEntity addNewStudent(Long groupId, Long studentId) throws UserNotFoundExeption, GroupNotFoundExeption {
         GroupEntity group =  groupRepo.findById(groupId).get();
         UserEntity student  = userRepo.findById(studentId).get();
         if (student == null){
             throw new UserNotFoundExeption("User not found");
         }
         if (group == null){
-            throw new GroupNotFoundedExeption("Group not founded");
+            throw new GroupNotFoundExeption("Group not founded");
         }
         group.addStudent(student);
+
         return groupRepo.save(group);
     }
 
-    public Boolean changeTeacher (Long groupId, Long teacherId) throws GroupNotFoundedExeption, UserNotFoundExeption {
-        GroupEntity group =  groupRepo.findById(groupId).get();
-        UserEntity teacher  = userRepo.findById(teacherId).get();
-        if (group == null){
-            throw new GroupNotFoundedExeption("Group not founded");
-        }
-        if (teacher == null){
-            throw new UserNotFoundExeption("User not founded");
-        }
+    public Boolean changeTeacher (Long groupId, Long teacherId) throws GroupNotFoundExeption, UserNotFoundExeption {
+        GroupEntity group =  groupRepo.findById(groupId).orElseThrow(() -> new GroupNotFoundExeption("Group not found"));
+        UserEntity teacher  = userRepo.findById(teacherId).orElseThrow(() -> new UserNotFoundExeption("User not found"));
         group.setTeacher(teacher);
         groupRepo.save(group);
         return true;
     }
 
 
-    public GroupEntity getOne(Long id) throws GroupNotFoundedExeption {
+    public GroupEntity getOne(Long id) throws GroupNotFoundExeption {
         GroupEntity group = groupRepo.findById(id).get();
         if (group == null){
-            throw new GroupNotFoundedExeption("Group not found");
+            throw new GroupNotFoundExeption("Group not found");
         }
         return group;
     }
+    public List<UserEntity> getStudentsWhoStudyInGroup(Long id) throws  GroupNotFoundExeption{
+        GroupEntity group = groupRepo.findById(id).orElseThrow(() -> new GroupNotFoundExeption("Group Not Found"));
+       return group.getStudents();
+    }
+
+
 }

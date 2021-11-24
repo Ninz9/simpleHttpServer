@@ -3,6 +3,7 @@ package com.example.onlineSchool.service;
 
 import com.example.onlineSchool.entity.SubjectEntity;
 import com.example.onlineSchool.exception.SubjectAlreadyExistException;
+import com.example.onlineSchool.exception.SubjectNotFoundExeption;
 import com.example.onlineSchool.repository.SubjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,18 @@ public class SubjectService {
              throw new SubjectAlreadyExistException("Subject already exist");
         }
         return subjectRepo.save(subject);
+    }
+    public  SubjectEntity getSubject(Long id) throws SubjectNotFoundExeption{
+        SubjectEntity subject = subjectRepo.findById(id).get();
+        if (subject == null)
+            throw new SubjectNotFoundExeption("Subject not found");
+        return subject;
+    }
+    public boolean deleteSubject(Long id) throws  SubjectNotFoundExeption{
+        if (subjectRepo.findById(id).get() == null)
+            throw new SubjectNotFoundExeption("Subject not found");
+        subjectRepo.deleteById(id);
+        return true;
     }
 
 }

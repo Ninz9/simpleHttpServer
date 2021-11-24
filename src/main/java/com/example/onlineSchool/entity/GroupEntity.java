@@ -52,4 +52,8 @@ public class GroupEntity {
     public void addStudent(UserEntity student){
         students.add(student);
     }
+
+    public List<UserEntity> getStudents() {
+        return students;
+    }
 }

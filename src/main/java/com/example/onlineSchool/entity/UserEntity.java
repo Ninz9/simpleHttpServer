@@ -46,5 +46,7 @@ public class UserEntity{
         this.password = password;
     }
 
-
+    public void addGroup(GroupEntity group){
+        studyInClasses.add(group);
+    }
 }
