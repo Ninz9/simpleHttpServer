@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/group")
+@RequestMapping("/groups")
 public class GroupController {
     @Autowired
     GroupService groupService;
