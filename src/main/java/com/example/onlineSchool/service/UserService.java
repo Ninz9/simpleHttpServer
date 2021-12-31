@@ -3,6 +3,7 @@ package com.example.onlineSchool.service;
 import com.example.onlineSchool.entity.GroupEntity;
 import com.example.onlineSchool.entity.UserEntity;
 import com.example.onlineSchool.exception.UserAlreadyExistException;
+import com.example.onlineSchool.exception.UserDontHaveGroups;
 import com.example.onlineSchool.exception.UserNotFoundExeption;
 import com.example.onlineSchool.model.Group;
 import com.example.onlineSchool.model.User;
@@ -10,6 +11,7 @@ import com.example.onlineSchool.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,10 +37,15 @@ public class UserService {
         return User.toModel(user);
     }
 
+
+
     public Long deleteOne(Long id) throws UserNotFoundExeption {
         userRepo.deleteById(id);
         return id;
     }
+
+
+
     public  Long changeUsername(Long id, String newUsername) throws UserNotFoundExeption {
         UserEntity user = userRepo.findById(id).get();
         if (user == null){
@@ -48,12 +55,21 @@ public class UserService {
         userRepo.save(user);
         return id;
     }
-    public List<Group> getGroups(Long id) throws UserNotFoundExeption{
+
+
+    public List<Group> getGroups(Long id) throws UserNotFoundExeption, UserDontHaveGroups{
         UserEntity user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundExeption("User not found"));
-        List<Group> tmp = null;
-        for (GroupEntity i: user.getStudyInClasses()){
+        List<Group> tmp = new ArrayList<>();
+        List<GroupEntity> studyInClasses = user.getStudyInClasses();
+        for (GroupEntity i: studyInClasses){
             tmp.add(Group.toModel(i));
         }
-            return tmp;
+        if (tmp == null){
+            throw new UserDontHaveGroups("User dont have groups");
+        }
+        return tmp;
     }
+
+
+
 }

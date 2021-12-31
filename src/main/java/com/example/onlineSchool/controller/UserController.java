@@ -3,6 +3,7 @@ package com.example.onlineSchool.controller;
 
 import com.example.onlineSchool.entity.UserEntity;
 import com.example.onlineSchool.exception.UserAlreadyExistException;
+import com.example.onlineSchool.exception.UserDontHaveGroups;
 import com.example.onlineSchool.exception.UserNotFoundExeption;
 import com.example.onlineSchool.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
+    
     @Autowired
      private UserService userService;
 
@@ -51,6 +54,9 @@ public ResponseEntity getOneUser(@RequestParam Long id , Long flag){
             }
             catch (UserNotFoundExeption userNotFoundExeption){
                 return ResponseEntity.badRequest().body(userNotFoundExeption);
+            }
+            catch (UserDontHaveGroups userDontHaveGroups){
+                return ResponseEntity.badRequest().body(userDontHaveGroups);
             }
         }
 }

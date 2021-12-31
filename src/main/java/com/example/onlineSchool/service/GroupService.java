@@ -12,6 +12,7 @@ import com.example.onlineSchool.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -64,7 +65,7 @@ public class GroupService {
     }
     public List<User> getStudentsWhoStudyInGroup(Long id) throws  GroupNotFoundExeption{
         GroupEntity group = groupRepo.findById(id).orElseThrow(() -> new GroupNotFoundExeption("Group Not Found"));
-        List<User> tmp = null;
+        List<User> tmp = new ArrayList<>();
         for (int i = 0; i< group.getStudents().size();i++){
             tmp.add(User.toModel(group.getStudents().get(i)));
         }

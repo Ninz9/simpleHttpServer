@@ -42,8 +42,8 @@ public class SubjectController {
       }
 
     }
-    @DeleteMapping
-    public ResponseEntity deleteSubject (@RequestParam Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteSubject (@PathVariable Long id){
         try {
             return ResponseEntity.ok(subjectService.deleteSubject(id));
         }

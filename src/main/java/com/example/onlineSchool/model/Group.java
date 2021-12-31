@@ -1,7 +1,6 @@
 package com.example.onlineSchool.model;
 
 import com.example.onlineSchool.entity.GroupEntity;
-import com.example.onlineSchool.entity.UserEntity;
 
 public class Group {
     Long id_group;
@@ -10,12 +9,11 @@ public class Group {
     public Group() {
     }
     public static Group toModel(GroupEntity entity){
-
-       Group group = new Group();
-       group.id_group = entity.getId();
-       group.id_teacher =  entity.getTeacher().getId();
-       group.id_subject = entity.getSubject().getId();
-       return group;
+        Group group = new Group();
+        group.setId_group(entity.getId());
+        group.setTeacher(entity.getTeacher().getId());
+        group.setId_subject(entity.getSubject().getId());
+        return group;
     }
 
     public Long getId_group() {
