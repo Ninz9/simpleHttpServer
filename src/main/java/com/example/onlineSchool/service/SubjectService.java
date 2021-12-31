@@ -21,12 +21,16 @@ public class SubjectService {
         }
         return subjectRepo.save(subject);
     }
+
+
     public  SubjectEntity getSubject(Long id) throws SubjectNotFoundExeption{
         SubjectEntity subject = subjectRepo.findById(id).get();
         if (subject == null)
             throw new SubjectNotFoundExeption("Subject not found");
         return subject;
     }
+
+
     public boolean deleteSubject(Long id) throws  SubjectNotFoundExeption{
         if (subjectRepo.findById(id).get() == null)
             throw new SubjectNotFoundExeption("Subject not found");

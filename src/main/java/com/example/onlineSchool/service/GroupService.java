@@ -4,6 +4,7 @@ import com.example.onlineSchool.entity.GroupEntity;
 import com.example.onlineSchool.entity.SubjectEntity;
 import com.example.onlineSchool.entity.UserEntity;
 import com.example.onlineSchool.exception.GroupNotFoundExeption;
+import com.example.onlineSchool.exception.StudentAlreadyStudyInThisGroup;
 import com.example.onlineSchool.exception.UserNotFoundExeption;
 import com.example.onlineSchool.model.User;
 import com.example.onlineSchool.repository.GroupRepo;
@@ -33,19 +34,25 @@ public class GroupService {
     }
 
 
-    public GroupEntity addNewStudent(Long groupId, Long studentId) throws UserNotFoundExeption, GroupNotFoundExeption {
-        GroupEntity group =  groupRepo.findById(groupId).get();
-        UserEntity student  = userRepo.findById(studentId).get();
-        if (student == null){
-            throw new UserNotFoundExeption("User not found");
-        }
-        if (group == null){
-            throw new GroupNotFoundExeption("Group not founded");
-        }
+    public GroupEntity addNewStudent(Long groupId, Long studentId) throws UserNotFoundExeption, GroupNotFoundExeption,StudentAlreadyStudyInThisGroup {
+        GroupEntity group =  groupRepo.findById(groupId).orElseThrow(()->new GroupNotFoundExeption("Group not found"));
+        UserEntity student  = userRepo.findById(studentId).orElseThrow(()->new UserNotFoundExeption("User not found"));
+        if (groupHaveThisStudent(studentId, groupId)) throw new StudentAlreadyStudyInThisGroup("Student already study in this group");
         group.addStudent(student);
         student.addGroup(group);
         return groupRepo.save(group);
     }
+
+    private boolean groupHaveThisStudent(Long id_student, Long id_group) {
+        GroupEntity group = groupRepo.findById(id_group).get();
+        for (UserEntity i: group.getStudents()){
+            if (i.getId().equals(id_student)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public Boolean changeTeacher (Long groupId, Long teacherId) throws GroupNotFoundExeption, UserNotFoundExeption {
         GroupEntity group =  groupRepo.findById(groupId).orElseThrow(() -> new GroupNotFoundExeption("Group not found"));
@@ -63,6 +70,8 @@ public class GroupService {
         }
         return group;
     }
+
+
     public List<User> getStudentsWhoStudyInGroup(Long id) throws  GroupNotFoundExeption{
         GroupEntity group = groupRepo.findById(id).orElseThrow(() -> new GroupNotFoundExeption("Group Not Found"));
         List<User> tmp = new ArrayList<>();

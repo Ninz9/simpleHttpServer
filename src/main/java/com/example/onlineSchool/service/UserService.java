@@ -30,10 +30,7 @@ public class UserService {
 
 
     public User getOne(Long id) throws UserNotFoundExeption {
-        UserEntity  user = userRepo.findById(id).get();
-        if (user == null){
-            throw new UserNotFoundExeption("User not found");
-        }
+        UserEntity  user = userRepo.findById(id).orElseThrow(()->new UserNotFoundExeption("User not found"));
         return User.toModel(user);
     }
 
@@ -47,10 +44,7 @@ public class UserService {
 
 
     public  Long changeUsername(Long id, String newUsername) throws UserNotFoundExeption {
-        UserEntity user = userRepo.findById(id).get();
-        if (user == null){
-            throw new UserNotFoundExeption("User not found");
-        }
+        UserEntity user = userRepo.findById(id).orElseThrow(()->new UserNotFoundExeption("User not found"));
         user.setUsername(newUsername);
         userRepo.save(user);
         return id;
@@ -64,12 +58,10 @@ public class UserService {
         for (GroupEntity i: studyInClasses){
             tmp.add(Group.toModel(i));
         }
-        if (tmp == null){
+        if (tmp.isEmpty()){
             throw new UserDontHaveGroups("User dont have groups");
         }
         return tmp;
     }
-
-
 
 }
