@@ -1,6 +1,7 @@
 package com.example.onlineSchool.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,8 +25,26 @@ public class GroupEntity {
 
 
     public GroupEntity() {
+        students = new ArrayList<>();
     }
 
+    public GroupEntity(Long id, SubjectEntity subject, UserEntity id_teacher){
+       this.setId(id);
+       this.setSubject(subject);
+       this.setTeacher(id_teacher);
+       students = new ArrayList<>();
+    }
+    public GroupEntity(Long id, SubjectEntity subject, UserEntity id_teacher, List<UserEntity> students){
+        this.setId(id);
+        this.setSubject(subject);
+        this.setTeacher(id_teacher);
+        this.students = students;
+    }
+
+
+    public GroupEntity(Long id){
+        this.setId(id);
+    }
     public Long getId() {
         return id;
     }

@@ -20,6 +20,10 @@ public class SubjectEntity {
     public SubjectEntity() {
     }
 
+    public SubjectEntity(Long id, String title){
+        this.setId(id);
+        this.setTitle(title);
+    }
     public Long getId() {
         return id;
     }

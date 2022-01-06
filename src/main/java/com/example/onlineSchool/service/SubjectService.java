@@ -24,16 +24,13 @@ public class SubjectService {
 
 
     public  SubjectEntity getSubject(Long id) throws SubjectNotFoundExeption{
-        SubjectEntity subject = subjectRepo.findById(id).get();
-        if (subject == null)
-            throw new SubjectNotFoundExeption("Subject not found");
+        SubjectEntity subject = subjectRepo.findById(id).orElseThrow(()->new SubjectNotFoundExeption("Subject not found"));
         return subject;
     }
 
 
     public boolean deleteSubject(Long id) throws  SubjectNotFoundExeption{
-        if (subjectRepo.findById(id).get() == null)
-            throw new SubjectNotFoundExeption("Subject not found");
+        subjectRepo.findById(id).orElseThrow(()->new SubjectNotFoundExeption("Subject not found"));
         subjectRepo.deleteById(id);
         return true;
     }

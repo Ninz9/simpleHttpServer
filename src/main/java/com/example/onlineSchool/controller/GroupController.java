@@ -17,7 +17,7 @@ public class GroupController {
     GroupService groupService;
 
     @GetMapping
-    public ResponseEntity getGroup(@RequestParam Long id, @RequestParam Long flag) {
+    public ResponseEntity getGroups(@RequestParam Long id, @RequestParam Long flag) {
         if (flag == 1) {
             try {
                 return ResponseEntity.ok(new Group().toModel(groupService.getOne(id)));

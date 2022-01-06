@@ -36,18 +36,19 @@ public class UserService {
 
 
 
-    public Long deleteOne(Long id) throws UserNotFoundExeption {
+    public UserEntity deleteOne(Long id) throws UserNotFoundExeption {
+        UserEntity user = userRepo.findById(id).orElseThrow(()->new UserNotFoundExeption("User not found"));
         userRepo.deleteById(id);
-        return id;
+        return user;
     }
 
 
 
-    public  Long changeUsername(Long id, String newUsername) throws UserNotFoundExeption {
+    public UserEntity changeUsername(Long id, String newUsername) throws UserNotFoundExeption {
         UserEntity user = userRepo.findById(id).orElseThrow(()->new UserNotFoundExeption("User not found"));
         user.setUsername(newUsername);
         userRepo.save(user);
-        return id;
+        return user;
     }
 
 

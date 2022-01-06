@@ -2,6 +2,7 @@ package com.example.onlineSchool.entity;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,8 +21,15 @@ public class UserEntity{
    private List<GroupEntity> studyInClasses;
 
     public UserEntity() {
+        studyInClasses = new ArrayList<>();
     }
 
+    public UserEntity(Long id,String username, String password){
+        this.setId(id);
+        this.setUsername(username);
+        this.setPassword(password);
+        studyInClasses = new ArrayList<>();
+    }
     public Long getId() {
         return id;
     }

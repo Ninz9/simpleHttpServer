@@ -8,6 +8,11 @@ public class User {
 
     public User() {
     }
+    public User(Long id, String username){
+        this.setId(id);
+        this.setUsername(username);
+
+    }
     public static User toModel(UserEntity entity){
         User user = new User();
         user.setUsername(entity.getUsername());

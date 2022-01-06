@@ -43,7 +43,7 @@ public class GroupService {
         return groupRepo.save(group);
     }
 
-    private boolean groupHaveThisStudent(Long id_student, Long id_group) {
+    private boolean groupHaveThisStudent(Long id_student, Long id_group) throws GroupNotFoundExeption, UserNotFoundExeption {
         GroupEntity group = groupRepo.findById(id_group).get();
         for (UserEntity i: group.getStudents()){
             if (i.getId().equals(id_student)){
@@ -54,20 +54,17 @@ public class GroupService {
     }
 
 
-    public Boolean changeTeacher (Long groupId, Long teacherId) throws GroupNotFoundExeption, UserNotFoundExeption {
+    public GroupEntity changeTeacher (Long groupId, Long teacherId) throws GroupNotFoundExeption, UserNotFoundExeption {
         GroupEntity group =  groupRepo.findById(groupId).orElseThrow(() -> new GroupNotFoundExeption("Group not found"));
         UserEntity teacher  = userRepo.findById(teacherId).orElseThrow(() -> new UserNotFoundExeption("User not found"));
         group.setTeacher(teacher);
         groupRepo.save(group);
-        return true;
+        return group;
     }
 
 
     public GroupEntity getOne(Long id) throws GroupNotFoundExeption {
-        GroupEntity group = groupRepo.findById(id).get();
-        if (group == null){
-            throw new GroupNotFoundExeption("Group not found");
-        }
+        GroupEntity group = groupRepo.findById(id).orElseThrow(()->new GroupNotFoundExeption("Group not found"));
         return group;
     }
 
