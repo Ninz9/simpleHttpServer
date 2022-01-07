@@ -33,7 +33,7 @@ class SubjectServiceTest {
     void createNewSubject() throws SubjectAlreadyExistException {
         SubjectEntity subject = new SubjectEntity( 1L, "math");
 
-        BDDMockito.given(subjectRepo.save(any(SubjectEntity.class))).willReturn(subject);
+        BDDMockito.when(subjectRepo.save(any(SubjectEntity.class))).thenReturn(subject);
 
         SubjectEntity returnSubject = subjectService.createNewSubject(subject);
 

@@ -1,5 +1,7 @@
 image: gradle:jdk17
 
+
+
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - chmod +x gradlew
