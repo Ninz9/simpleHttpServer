@@ -7,9 +7,7 @@ import com.example.onlineSchool.exception.SubjectNotFoundExeption;
 import com.example.onlineSchool.repository.SubjectRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.BDDMockito;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,10 +20,10 @@ import static org.mockito.ArgumentMatchers.any;
 @SpringBootTest
 class SubjectServiceTest {
 
-    @Autowired
+    @InjectMocks
     SubjectService subjectService;
 
-    @MockBean
+    @Mock
     SubjectRepo subjectRepo;
 
 
@@ -53,7 +51,7 @@ class SubjectServiceTest {
     @Test
     void getSubject() throws SubjectNotFoundExeption {
         SubjectEntity subject = new SubjectEntity( 1L, "math");
-        BDDMockito.given(subjectRepo.findById(1L)).willReturn(java.util.Optional.of(subject));
+        BDDMockito.when(subjectRepo.findById(1L)).thenReturn(java.util.Optional.of(subject));
 
         SubjectEntity res = subjectService.getSubject(1L);
 
@@ -68,7 +66,7 @@ class SubjectServiceTest {
     void deleteSubject() throws SubjectNotFoundExeption {
         SubjectEntity subject = new SubjectEntity( 1L, "math");
 
-        BDDMockito.given(subjectRepo.findById(1L)).willReturn(java.util.Optional.of(subject));
+        BDDMockito.when(subjectRepo.findById(1L)).thenReturn(java.util.Optional.of(subject));
 
         boolean res = subjectService.deleteSubject(subject.getId());
 
