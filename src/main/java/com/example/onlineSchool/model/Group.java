@@ -10,17 +10,17 @@ public class Group {
     }
     public static Group toModel(GroupEntity entity){
         Group group = new Group();
-        group.setId_group(entity.getId());
+        group.setGroup(entity.getId());
         group.setTeacher(entity.getTeacher().getId());
-        group.setId_subject(entity.getSubject().getId());
+        group.setSubject(entity.getSubject().getId());
         return group;
     }
 
-    public Long getId_group() {
+    public Long getGroup() {
         return id_group;
     }
 
-    public void setId_group(Long id_group) {
+    public void setGroup(Long id_group) {
         this.id_group = id_group;
     }
 
@@ -32,11 +32,11 @@ public class Group {
         this.id_teacher = teacher;
     }
 
-    public Long getId_subject() {
+    public Long getSubject() {
         return id_subject;
     }
 
-    public void setId_subject(Long id_subject) {
+    public void setSubject(Long id_subject) {
         this.id_subject = id_subject;
     }
 }

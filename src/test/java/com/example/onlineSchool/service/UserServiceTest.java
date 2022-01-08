@@ -129,8 +129,8 @@ class UserServiceTest {
 
         Assertions.assertEquals(res.size(),resControl.size());
         for (int i = 0; i < res.size();i++){
-            Assertions.assertEquals(res.get(i).getId_subject(),resControl.get(i).getId_subject());
-            Assertions.assertEquals(res.get(i).getId_group(),resControl.get(i).getId_group());
+            Assertions.assertEquals(res.get(i).getSubject(),resControl.get(i).getSubject());
+            Assertions.assertEquals(res.get(i).getGroup(),resControl.get(i).getGroup());
             Assertions.assertEquals(res.get(i).getTeacher(),resControl.get(i).getTeacher());
         }
 
