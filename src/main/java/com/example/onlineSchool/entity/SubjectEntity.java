@@ -6,7 +6,6 @@ import java.util.List;
 @Entity
 public class SubjectEntity {
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
     private String title;
 
