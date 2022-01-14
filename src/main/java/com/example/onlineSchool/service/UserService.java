@@ -36,16 +36,18 @@ public class UserService {
 
 
 
-    public UserEntity deleteOne(Long id) throws UserNotFoundExeption {
-        UserEntity user = userRepo.findById(id).orElseThrow(()->new UserNotFoundExeption("User not found"));
+    public Long deleteOne(Long id) throws UserNotFoundExeption {
+        UserEntity tmp = userRepo.findById(id).orElseThrow(()->new UserNotFoundExeption("User not found"));
         userRepo.deleteById(id);
-        return user;
+        return id;
     }
 
 
 
-    public UserEntity changeUsername(Long id, String newUsername) throws UserNotFoundExeption {
+    public UserEntity changeUsername(Long id, String newUsername) throws UserNotFoundExeption, UserAlreadyExistException {
         UserEntity user = userRepo.findById(id).orElseThrow(()->new UserNotFoundExeption("User not found"));
+        UserEntity user1 = userRepo.findByUsername(newUsername);
+        if (user1 != null) throw new UserAlreadyExistException("User already exist");
         user.setUsername(newUsername);
         userRepo.save(user);
         return user;

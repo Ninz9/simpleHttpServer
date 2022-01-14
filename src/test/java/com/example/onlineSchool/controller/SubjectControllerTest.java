@@ -54,7 +54,7 @@ class SubjectControllerTest {
                 MockMvcRequestBuilders.post("/subjects")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"title\":\"math\"}")
-        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+        ).andExpect(MockMvcResultMatchers.status().isConflict());
         Mockito.verify(subjectService, Mockito.atLeast(2)).createNewSubject(any(SubjectEntity.class));
     }
 

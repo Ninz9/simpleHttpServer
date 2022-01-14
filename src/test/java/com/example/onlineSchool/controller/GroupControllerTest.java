@@ -55,7 +55,7 @@ class GroupControllerTest {
                                 .param("flag", "1")
                 ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.teacher", CoreMatchers.is(groupCheck.getTeacher().intValue())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id_subject", CoreMatchers.is(groupCheck.getSubject().intValue())));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.subject", CoreMatchers.is(groupCheck.getSubject().intValue())));
 
 
         List<User> retList = new ArrayList<>();
@@ -111,7 +111,7 @@ class GroupControllerTest {
                 MockMvcRequestBuilders
                         .put("/groups")
                         .param("groupId", "1")
-                        .param("studentID", "2")
+                        .param("studentId", "2")
         ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(containsString("Student has been added")));
     }

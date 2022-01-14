@@ -8,8 +8,10 @@ import com.example.onlineSchool.exception.SubjectNotFoundExeption;
 import com.example.onlineSchool.exception.UserAlreadyExistException;
 import com.example.onlineSchool.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/subjects")
@@ -25,7 +27,7 @@ public class SubjectController {
             return  ResponseEntity.ok("New subject!");
         }
         catch (SubjectAlreadyExistException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Error");
         }
@@ -36,7 +38,7 @@ public class SubjectController {
       try {
           return ResponseEntity.ok(subjectService.getSubject(id));
       } catch (SubjectNotFoundExeption subjectNotFoundExeption){
-          return ResponseEntity.badRequest().body(subjectNotFoundExeption);
+          throw  new ResponseStatusException(HttpStatus.NOT_FOUND);
       } catch (Exception e){
           return ResponseEntity.badRequest().body("ERROR");
       }
@@ -48,7 +50,7 @@ public class SubjectController {
             return ResponseEntity.ok(subjectService.deleteSubject(id));
         }
         catch (SubjectNotFoundExeption subjectNotFoundExeption){
-            return ResponseEntity.badRequest().body(subjectNotFoundExeption);
+            throw  new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 

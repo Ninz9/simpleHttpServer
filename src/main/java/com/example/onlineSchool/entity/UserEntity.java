@@ -8,6 +8,7 @@ import java.util.List;
 @Entity
 public class UserEntity{
     @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;
@@ -25,6 +26,11 @@ public class UserEntity{
 
     public UserEntity(Long id,String username, String password){
         this.setId(id);
+        this.setUsername(username);
+        this.setPassword(password);
+        studyInClasses = new ArrayList<>();
+    }
+    public UserEntity(String username, String password){
         this.setUsername(username);
         this.setPassword(password);
         studyInClasses = new ArrayList<>();

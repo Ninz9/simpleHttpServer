@@ -7,8 +7,10 @@ import com.example.onlineSchool.exception.UserNotFoundExeption;
 import com.example.onlineSchool.model.Group;
 import com.example.onlineSchool.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/groups")
@@ -22,7 +24,7 @@ public class GroupController {
             try {
                 return ResponseEntity.ok(new Group().toModel(groupService.getOne(id)));
             } catch (GroupNotFoundExeption groupNotFoundedException) {
-                return ResponseEntity.badRequest().body(groupNotFoundedException);
+                throw  new ResponseStatusException(HttpStatus.NOT_FOUND);
             } catch (Exception e) {
                 return ResponseEntity.badRequest().body("ERROR");
             }
@@ -30,7 +32,7 @@ public class GroupController {
             try {
                 return ResponseEntity.ok(groupService.getStudentsWhoStudyInGroup(id));
             } catch (GroupNotFoundExeption groupNotFoundExeption) {
-                return ResponseEntity.badRequest().body(groupNotFoundExeption);
+                throw  new ResponseStatusException(HttpStatus.NOT_FOUND);
             }
         }
     }
@@ -73,7 +75,7 @@ public class GroupController {
             groupService.changeTeacher(groupId,teacherId);
             return ResponseEntity.ok("Teacher was changed");
         } catch (UserNotFoundExeption | GroupNotFoundExeption userNotFoundException) {
-            return ResponseEntity.badRequest().body(userNotFoundException);
+            throw  new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 

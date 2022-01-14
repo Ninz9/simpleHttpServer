@@ -75,11 +75,9 @@ class UserServiceTest {
 
         BDDMockito.given(userRepo.findById(user.getId())).willReturn(java.util.Optional.of(user));
 
-        UserEntity res = userService.deleteOne(user.getId());
+        Long res = userService.deleteOne(user.getId());
 
-        Assertions.assertEquals(res.getId(), user.getId());
-        Assertions.assertEquals(res.getUsername(), user.getUsername());
-        Assertions.assertEquals(res.getPassword(), user.getPassword());
+        Assertions.assertEquals(res, user.getId());
     }
 
 
@@ -87,7 +85,7 @@ class UserServiceTest {
 
 
     @Test
-    void changeUsername() throws  UserNotFoundExeption{
+    void changeUsername() throws  UserNotFoundExeption, UserAlreadyExistException{
 
         UserEntity userReturn = new UserEntity(1L,"chertrom","qwerty");
         UserEntity userControl = new UserEntity(1L,"Bob", "qwerty");

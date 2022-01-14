@@ -47,8 +47,10 @@ class UserControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"username\":\"chertrom\", \"password\":\"qwerty\"}")
 
-                ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(containsString("New USER!")));
+                )       .andExpect(MockMvcResultMatchers.status().isOk())
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(user.getId().intValue())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.username", CoreMatchers.is(user.getUsername())))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.password",CoreMatchers.is(user.getPassword())));
 
 
         BDDMockito.given(userService.registration(any(UserEntity.class))).willThrow(UserAlreadyExistException.class);
@@ -57,7 +59,7 @@ class UserControllerTest {
                 MockMvcRequestBuilders.post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"chertrom\", \"password\":\"qwerty\"}")
-        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+        ).andExpect(MockMvcResultMatchers.status().isConflict());
         Mockito.verify(userService, Mockito.atLeast(2)).registration(any(UserEntity.class));
     }
 
@@ -112,7 +114,7 @@ class UserControllerTest {
                         .param("id", id2)
                         .param("newName", newUsername)
 
-        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+        ).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
 
